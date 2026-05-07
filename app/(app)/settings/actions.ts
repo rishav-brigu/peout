@@ -63,6 +63,11 @@ export async function changePassword(
 export async function inviteUser(
   email: string
 ): Promise<{ error?: string }> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
+  if (user.id !== process.env.OWNER_USER_ID) return { error: 'Only the workspace owner can invite users.' }
+
   const admin = createAdminClient()
   const { error } = await admin.auth.admin.inviteUserByEmail(email)
   if (error) return { error: error.message }

@@ -30,6 +30,7 @@ export async function GET(request: Request) {
     const hasEmailIdentity = fullUser?.identities?.some((i) => i.provider === 'email') ?? false
 
     if (!wasInvited && !hasEmailIdentity) {
+      await admin.auth.admin.deleteUser(user.id)
       await supabase.auth.signOut()
       return NextResponse.redirect(`${origin}/login?error=not_invited`)
     }
