@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { Plus, Search, Upload, Users } from 'lucide-react'
+import { Plus, Search, Download, Users } from 'lucide-react'
+import { exportBuyers } from '@/lib/export'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { buttonVariants } from '@/components/ui/button'
@@ -137,8 +138,13 @@ export function BuyersClient({ buyers, cities }: BuyersClientProps) {
         </div>
 
         <div className="ml-auto flex items-center gap-2">
-          <Button variant="outline" size="sm" className="border-[#E7E3DC] text-[#78716C] gap-1.5">
-            <Upload size={14} />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => exportBuyers(filtered)}
+            className="border-[#E7E3DC] text-[#78716C] gap-1.5"
+          >
+            <Download size={14} />
             Export
           </Button>
           <Button

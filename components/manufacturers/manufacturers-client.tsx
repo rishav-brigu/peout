@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Plus, Search, Upload, Factory } from 'lucide-react'
+import { Plus, Search, Download, Factory } from 'lucide-react'
+import { exportManufacturers } from '@/lib/export'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ManufacturerCard } from './manufacturer-card'
@@ -107,9 +108,10 @@ export function ManufacturersClient({ manufacturers, cities }: ManufacturersClie
           <Button
             variant="outline"
             size="sm"
+            onClick={() => exportManufacturers(filtered)}
             className="border-[#E7E3DC] text-[#78716C] gap-1.5"
           >
-            <Upload size={14} />
+            <Download size={14} />
             Export
           </Button>
           <Button

@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Search, Download, CreditCard } from 'lucide-react'
+import { exportPayments } from '@/lib/export'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { StatusBadge } from '@/components/shared/status-badge'
@@ -44,30 +45,6 @@ function getDateUpperBound(range: DateRange): Date | null {
   return new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999)
 }
 
-function exportCSV(rows: PaymentRow[]) {
-  const header = ['Date', 'Order', 'Buyer', 'Manufacturer', 'Mode', 'Amount', 'Notes']
-  const lines = rows.map((p) =>
-    [
-      formatDate(p.paid_at),
-      p.order_number,
-      p.buyer_name,
-      p.manufacturer_name,
-      p.mode,
-      p.amount,
-      p.notes ?? '',
-    ]
-      .map((v) => `"${String(v).replace(/"/g, '""')}"`)
-      .join(',')
-  )
-  const csv = [header.join(','), ...lines].join('\n')
-  const blob = new Blob([csv], { type: 'text/csv' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `payments-${new Date().toISOString().slice(0, 10)}.csv`
-  a.click()
-  URL.revokeObjectURL(url)
-}
 
 interface PaymentsClientProps {
   payments: PaymentRow[]
@@ -241,11 +218,11 @@ export function PaymentsClient({ payments }: PaymentsClientProps) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => exportCSV(filtered)}
+            onClick={() => exportPayments(filtered)}
             className="border-[#E7E3DC] text-[#78716C] gap-1.5"
           >
             <Download size={14} />
-            Export CSV
+            Export
           </Button>
         </div>
       </div>

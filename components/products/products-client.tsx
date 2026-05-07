@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Plus, Search, Upload, Package, Clock, Pencil } from 'lucide-react'
+import { Plus, Search, Download, Package, Clock, Pencil } from 'lucide-react'
+import { exportProducts } from '@/lib/export'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { StatusBadge } from '@/components/shared/status-badge'
@@ -138,8 +139,13 @@ export function ProductsClient({
         </label>
 
         <div className="ml-auto flex items-center gap-2">
-          <Button variant="outline" size="sm" className="border-[#E7E3DC] text-[#78716C] gap-1.5">
-            <Upload size={14} />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => exportProducts(filtered)}
+            className="border-[#E7E3DC] text-[#78716C] gap-1.5"
+          >
+            <Download size={14} />
             Export
           </Button>
           <Button
