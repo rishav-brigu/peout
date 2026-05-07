@@ -10,15 +10,17 @@ import {
   Users,
   Package,
   Wallet,
+  Settings,
 } from 'lucide-react'
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/orders', label: 'Orders', icon: ShoppingCart },
-  { href: '/manufacturers', label: 'Manufacturers', icon: Factory },
+  { href: '/manufacturers', label: 'Mfrs', icon: Factory },
   { href: '/buyers', label: 'Buyers', icon: Users },
   { href: '/products', label: 'Products', icon: Package },
   { href: '/payments', label: 'Payments', icon: Wallet },
+  { href: '/settings', label: 'Settings', icon: Settings },
 ]
 
 export function MobileNav() {

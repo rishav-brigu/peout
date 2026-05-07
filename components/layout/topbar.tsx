@@ -29,6 +29,15 @@ export function Topbar() {
         <LogOut size={16} className="mr-1.5" />
         Sign out
       </Button>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={handleSignOut}
+        className="text-[#78716C] hover:text-[#1C1917] md:hidden h-8 w-8"
+        title="Sign out"
+      >
+        <LogOut size={16} />
+      </Button>
     </header>
   )
 }

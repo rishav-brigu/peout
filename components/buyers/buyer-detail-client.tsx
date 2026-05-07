@@ -163,7 +163,8 @@ export function BuyerDetailClient({ buyer, orders, payments, stats }: BuyerDetai
               />
             ) : (
               <div className="bg-white border border-[#E7E3DC] rounded-xl overflow-hidden">
-                <table className="w-full text-sm">
+                <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[620px]">
                   <thead>
                     <tr className="border-b border-[#E7E3DC] bg-[#FAF7F2]">
                       <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wide text-[#78716C] font-medium">Order ID</th>
@@ -200,6 +201,7 @@ export function BuyerDetailClient({ buyer, orders, payments, stats }: BuyerDetai
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             )}
           </TabsContent>
@@ -214,7 +216,8 @@ export function BuyerDetailClient({ buyer, orders, payments, stats }: BuyerDetai
               />
             ) : (
               <div className="bg-white border border-[#E7E3DC] rounded-xl overflow-hidden">
-                <table className="w-full text-sm">
+                <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[400px]">
                   <thead>
                     <tr className="border-b border-[#E7E3DC] bg-[#FAF7F2]">
                       <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wide text-[#78716C] font-medium">Date</th>
@@ -257,6 +260,7 @@ export function BuyerDetailClient({ buyer, orders, payments, stats }: BuyerDetai
                     </tr>
                   </tfoot>
                 </table>
+                </div>
               </div>
             )}
           </TabsContent>

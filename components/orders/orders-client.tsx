@@ -126,7 +126,8 @@ export function OrdersClient({ orders }: OrdersClientProps) {
         />
       ) : (
         <div className="bg-white border border-[#E7E3DC] rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[750px]">
             <thead>
               <tr className="border-b border-[#E7E3DC] bg-[#FAF7F2]">
                 <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wide text-[#78716C] font-medium">
@@ -209,6 +210,7 @@ export function OrdersClient({ orders }: OrdersClientProps) {
               ))}
             </tbody>
           </table>
+          </div>
           <div className="px-4 py-2 border-t border-[#E7E3DC] bg-[#FAF7F2] text-xs text-[#78716C]">
             Showing {filtered.length} of {orders.length} orders
           </div>

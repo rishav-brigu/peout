@@ -268,7 +268,8 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
                 Order items
               </p>
             </div>
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[480px]">
               <thead>
                 <tr className="border-b border-[#E7E3DC]">
                   <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-wide text-[#78716C] font-medium">
@@ -326,6 +327,7 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
                 </tr>
               </tfoot>
             </table>
+            </div>
           </div>
 
           {/* Summary card */}
@@ -413,7 +415,8 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
               <p className="text-sm text-[#78716C]">No payments recorded yet.</p>
             </div>
           ) : (
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[360px]">
               <thead>
                 <tr className="border-b border-[#E7E3DC] bg-[#FAF7F2]">
                   <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-wide text-[#78716C] font-medium">
@@ -459,6 +462,7 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
                 </tfoot>
               )}
             </table>
+            </div>
           )}
         </div>
 
