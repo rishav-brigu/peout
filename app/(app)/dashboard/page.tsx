@@ -217,7 +217,8 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-[#E7E3DC] bg-[#FAF7F2]">
                 <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-wide text-[#78716C] font-medium">
@@ -270,6 +271,7 @@ export default async function DashboardPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

@@ -244,7 +244,8 @@ export function PaymentsClient({ payments }: PaymentsClientProps) {
         />
       ) : (
         <div className="bg-white border border-[#E7E3DC] rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[500px]">
             <thead>
               <tr className="border-b border-[#E7E3DC] bg-[#FAF7F2]">
                 <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wide text-[#78716C] font-medium">
@@ -318,6 +319,7 @@ export function PaymentsClient({ payments }: PaymentsClientProps) {
               </tr>
             </tfoot>
           </table>
+          </div>
         </div>
       )}
     </>
