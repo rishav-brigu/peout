@@ -37,7 +37,8 @@ export async function proxy(request: NextRequest) {
   }
 
   // Unauthenticated users hitting any app route → redirect to login
-  if (!user && pathname !== '/login') {
+  // Allow /auth/callback to run so OAuth code exchange can complete
+  if (!user && pathname !== '/login' && !pathname.startsWith('/auth/')) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 

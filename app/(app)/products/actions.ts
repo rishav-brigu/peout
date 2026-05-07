@@ -80,7 +80,10 @@ export async function createProduct(data: {
   sell_price: number
 }): Promise<void> {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
   const { error } = await supabase.from('products').insert({
+    user_id: user.id,
     manufacturer_id: data.manufacturer_id,
     name: data.name.trim(),
     unit: data.unit.trim(),
