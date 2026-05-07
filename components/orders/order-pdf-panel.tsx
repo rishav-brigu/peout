@@ -5,16 +5,18 @@ import { Loader2, Download, Printer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { OrderDocument, type CopyType } from '@/components/pdf/order-document'
 import type { OrderDetailData } from '@/app/(app)/orders/actions'
+import type { AgentConfig } from '@/app/(app)/settings/actions'
 
 interface OrderPdfPanelProps {
   order: OrderDetailData
   copyType: CopyType
+  agent: AgentConfig
 }
 
-export default function OrderPdfPanel({ order, copyType }: OrderPdfPanelProps) {
+export default function OrderPdfPanel({ order, copyType, agent }: OrderPdfPanelProps) {
   const doc = useMemo(
-    () => <OrderDocument order={order} copyType={copyType} />,
-    [order, copyType]
+    () => <OrderDocument order={order} copyType={copyType} agent={agent} />,
+    [order, copyType, agent]
   )
   const [instance] = usePDF({ document: doc })
 

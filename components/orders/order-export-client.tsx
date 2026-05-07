@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { formatDate } from '@/lib/format'
 import type { OrderDetailData } from '@/app/(app)/orders/actions'
+import type { AgentConfig } from '@/app/(app)/settings/actions'
 import type { CopyType } from '@/components/pdf/order-document'
 
 const OrderPdfPanel = dynamic(() => import('./order-pdf-panel'), {
@@ -20,9 +21,10 @@ const OrderPdfPanel = dynamic(() => import('./order-pdf-panel'), {
 
 interface OrderExportClientProps {
   order: OrderDetailData
+  agent: AgentConfig
 }
 
-export function OrderExportClient({ order }: OrderExportClientProps) {
+export function OrderExportClient({ order, agent }: OrderExportClientProps) {
   const [copyType, setCopyType] = useState<CopyType>('buyer')
 
   return (
@@ -65,7 +67,7 @@ export function OrderExportClient({ order }: OrderExportClientProps) {
       </div>
 
       {/* PDF panel — loaded client-side only */}
-      <OrderPdfPanel order={order} copyType={copyType} />
+      <OrderPdfPanel order={order} copyType={copyType} agent={agent} />
     </div>
   )
 }

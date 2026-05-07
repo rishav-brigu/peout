@@ -1,6 +1,6 @@
 import { Document, Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { AGENT } from '@/lib/agent'
 import type { OrderDetailData } from '@/app/(app)/orders/actions'
+import type { AgentConfig } from '@/app/(app)/settings/actions'
 
 export type CopyType = 'buyer' | 'manufacturer'
 
@@ -135,9 +135,10 @@ const s = StyleSheet.create({
 interface OrderDocumentProps {
   order: OrderDetailData
   copyType: CopyType
+  agent: AgentConfig
 }
 
-export function OrderDocument({ order, copyType }: OrderDocumentProps) {
+export function OrderDocument({ order, copyType, agent }: OrderDocumentProps) {
   const isBuyer = copyType === 'buyer'
   const copyLabel = isBuyer ? 'Buyer copy' : 'Manufacturer copy'
 
@@ -151,7 +152,7 @@ export function OrderDocument({ order, copyType }: OrderDocumentProps) {
   return (
     <Document
       title={`${order.order_number} — ${copyLabel}`}
-      author={AGENT.name}
+      author={agent.name}
     >
       <Page size="A4" style={s.page}>
         {/* Header */}
@@ -161,10 +162,10 @@ export function OrderDocument({ order, copyType }: OrderDocumentProps) {
             <Text style={s.brandSub}>Commission Trading · Sleeping Accessories</Text>
           </View>
           <View>
-            <Text style={s.agentName}>{AGENT.name}</Text>
-            {AGENT.address ? <Text style={s.agentDetail}>{AGENT.address}</Text> : null}
-            {AGENT.phone ? <Text style={s.agentDetail}>{AGENT.phone}</Text> : null}
-            {AGENT.email ? <Text style={s.agentDetail}>{AGENT.email}</Text> : null}
+            <Text style={s.agentName}>{agent.name}</Text>
+            {agent.address ? <Text style={s.agentDetail}>{agent.address}</Text> : null}
+            {agent.phone ? <Text style={s.agentDetail}>{agent.phone}</Text> : null}
+            {agent.email ? <Text style={s.agentDetail}>{agent.email}</Text> : null}
           </View>
         </View>
 
@@ -262,7 +263,7 @@ export function OrderDocument({ order, copyType }: OrderDocumentProps) {
         {/* Signature */}
         <View style={s.sigBlock}>
           <View style={s.sigLine}>
-            <Text style={s.sigName}>{AGENT.name}</Text>
+            <Text style={s.sigName}>{agent.name}</Text>
             <Text style={s.sigTitle}>Authorised signatory · PeOut</Text>
           </View>
         </View>
