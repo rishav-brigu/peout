@@ -2,16 +2,19 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Pencil, Plus, Clock, ExternalLink } from 'lucide-react'
+import { Pencil, Plus, Clock } from 'lucide-react'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { EmptyState } from '@/components/shared/empty-state'
 import { ManufacturerForm } from './manufacturer-form'
+import { ProductForm } from '@/components/products/product-form'
+import { PriceHistoryDrawer } from '@/components/products/price-history-drawer'
 import { formatINR, formatDate, formatMonthYear } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { Manufacturer, Product } from '@/types'
 import type { ManufacturerOrderRow } from '@/app/(app)/manufacturers/actions'
+import type { ProductWithManufacturer } from '@/app/(app)/products/actions'
 import { Package2, ShoppingCart } from 'lucide-react'
 
 interface ManufacturerDetailClientProps {
@@ -28,6 +31,10 @@ export function ManufacturerDetailClient({
   stats,
 }: ManufacturerDetailClientProps) {
   const [editOpen, setEditOpen] = useState(false)
+  const [addProductOpen, setAddProductOpen] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [historyProduct, setHistoryProduct] = useState<ProductWithManufacturer | null>(null)
+  const [historyOpen, setHistoryOpen] = useState(false)
 
   return (
     <>
@@ -150,8 +157,8 @@ export function ManufacturerDetailClient({
               <span className="text-sm font-medium text-[#1C1917]">Products</span>
               <Button
                 size="sm"
+                onClick={() => setAddProductOpen(true)}
                 className="bg-[#92400E] hover:bg-[#78350F] text-white gap-1.5"
-                disabled
               >
                 <Plus size={13} />
                 Add product
@@ -214,12 +221,21 @@ export function ManufacturerDetailClient({
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-1">
                             <button
+                              onClick={() => {
+                                setHistoryProduct({
+                                  ...p,
+                                  manufacturer_name: manufacturer.name,
+                                  manufacturer_city: manufacturer.city ?? null,
+                                })
+                                setHistoryOpen(true)
+                              }}
                               className="p-1 rounded text-[#78716C] hover:text-[#1C1917] hover:bg-[#FAF7F2] transition-colors"
                               title="Price history"
                             >
                               <Clock size={14} />
                             </button>
                             <button
+                              onClick={() => setEditingProduct(p)}
                               className="p-1 rounded text-[#78716C] hover:text-[#1C1917] hover:bg-[#FAF7F2] transition-colors"
                               title="Edit product"
                             >
@@ -321,6 +337,31 @@ export function ManufacturerDetailClient({
         open={editOpen}
         onOpenChange={setEditOpen}
         manufacturer={manufacturer}
+      />
+
+      <ProductForm
+        open={addProductOpen}
+        onOpenChange={setAddProductOpen}
+        product={null}
+        manufacturers={[{ id: manufacturer.id, name: manufacturer.name }]}
+        defaultManufacturerId={manufacturer.id}
+      />
+
+      <ProductForm
+        open={!!editingProduct}
+        onOpenChange={(open) => { if (!open) setEditingProduct(null) }}
+        product={editingProduct}
+        manufacturers={[{ id: manufacturer.id, name: manufacturer.name }]}
+        defaultManufacturerId={manufacturer.id}
+      />
+
+      <PriceHistoryDrawer
+        product={historyProduct}
+        open={historyOpen}
+        onOpenChange={setHistoryOpen}
+        onRecordChange={() => {
+          if (historyProduct) setEditingProduct(historyProduct as Product)
+        }}
       />
     </>
   )
