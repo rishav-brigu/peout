@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -30,13 +30,11 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-export function LoginForm() {
+export function LoginForm({ error }: { error?: string }) {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
-    const error = searchParams.get('error')
     if (error === 'not_invited') {
       toast.error('Access denied', {
         description: 'This workspace is invite-only. Contact the owner to request access.',
@@ -44,7 +42,7 @@ export function LoginForm() {
     } else if (error === 'auth_error') {
       toast.error('Authentication failed', { description: 'Please try again.' })
     }
-  }, [searchParams])
+  }, [error])
 
   const {
     register,

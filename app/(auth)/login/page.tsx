@@ -2,7 +2,12 @@ export const dynamic = 'force-dynamic'
 
 import { LoginForm } from '@/components/auth/login-form'
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>
+}) {
+  const { error } = await searchParams
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2] px-4">
       {/* Subtle dot grid background */}
@@ -26,7 +31,7 @@ export default function LoginPage() {
 
         {/* Form card */}
         <div className="bg-white border border-[#E7E3DC] rounded-xl p-8 shadow-sm">
-          <LoginForm />
+          <LoginForm error={error} />
         </div>
 
         {/* Footer */}
