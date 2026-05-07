@@ -238,6 +238,7 @@ export async function getProductsForManufacturer(
 async function getNextOrderNumber(
   supabase: Awaited<ReturnType<typeof createClient>>
 ): Promise<string> {
+  // RLS scopes this to the current user's orders automatically
   const { data } = await supabase
     .from('orders')
     .select('order_number')
@@ -267,11 +268,14 @@ export async function createOrder(formData: {
   isDraft?: boolean
 }): Promise<{ id: string; order_number: string }> {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
   const order_number = await getNextOrderNumber(supabase)
 
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
+      user_id: user.id,
       order_number,
       manufacturer_id: formData.manufacturer_id,
       buyer_id: formData.buyer_id,

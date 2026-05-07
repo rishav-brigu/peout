@@ -132,7 +132,10 @@ export async function getManufacturerDetail(id: string): Promise<{
 
 export async function createManufacturer(data: ManufacturerFormData): Promise<void> {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
   const { error } = await supabase.from('manufacturers').insert({
+    user_id: user.id,
     name: data.name.trim(),
     phone: data.phone.trim() || null,
     address: data.address.trim() || null,

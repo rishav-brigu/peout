@@ -165,7 +165,10 @@ export async function getBuyerDetail(id: string): Promise<{
 
 export async function createBuyer(data: BuyerFormData): Promise<void> {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
   const { error } = await supabase.from('buyers').insert({
+    user_id: user.id,
     name: data.name.trim(),
     phone: data.phone.trim() || null,
     address: data.address.trim() || null,
