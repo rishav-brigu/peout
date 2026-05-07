@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -30,19 +30,22 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
+const ERROR_MESSAGES: Record<string, { title: string; description: string }> = {
+  not_invited: {
+    title: 'Access denied',
+    description: 'This workspace is invite-only. Contact the owner to request access.',
+  },
+  auth_error: {
+    title: 'Authentication failed',
+    description: 'Something went wrong. Please try again.',
+  },
+}
+
 export function LoginForm({ error }: { error?: string }) {
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
 
-  useEffect(() => {
-    if (error === 'not_invited') {
-      toast.error('Access denied', {
-        description: 'This workspace is invite-only. Contact the owner to request access.',
-      })
-    } else if (error === 'auth_error') {
-      toast.error('Authentication failed', { description: 'Please try again.' })
-    }
-  }, [error])
+  const errorMessage = error ? ERROR_MESSAGES[error] : null
 
   const {
     register,
@@ -76,6 +79,12 @@ export function LoginForm({ error }: { error?: string }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      {errorMessage && (
+        <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3">
+          <p className="text-sm font-medium text-red-700">{errorMessage.title}</p>
+          <p className="text-xs text-red-600 mt-0.5">{errorMessage.description}</p>
+        </div>
+      )}
       <div className="space-y-1.5">
         <Label htmlFor="email" className="text-[#1C1917] text-sm font-medium">
           Email
