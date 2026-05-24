@@ -235,23 +235,6 @@ export async function getProductsForManufacturer(
   return (data ?? []) as ProductForOrder[]
 }
 
-async function getNextOrderNumber(
-  supabase: Awaited<ReturnType<typeof createClient>>
-): Promise<string> {
-  // RLS scopes this to the current user's orders automatically
-  const { data } = await supabase
-    .from('orders')
-    .select('order_number')
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  if (!data?.order_number) return 'PO-0001'
-  const match = data.order_number.match(/PO-(\d+)/)
-  if (!match) return 'PO-0001'
-  return `PO-${String(parseInt(match[1], 10) + 1).padStart(4, '0')}`
-}
-
 export async function createOrder(formData: {
   manufacturer_id: string
   buyer_id: string
@@ -270,13 +253,14 @@ export async function createOrder(formData: {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
-  const order_number = await getNextOrderNumber(supabase)
 
+  // order_number is intentionally omitted — the DB trigger set_order_number
+  // assigns it from a global sequence, which avoids collisions under RLS
+  // (an RLS-scoped query would return PO-0001 for every new user, violating UNIQUE).
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
       user_id: user.id,
-      order_number,
       manufacturer_id: formData.manufacturer_id,
       buyer_id: formData.buyer_id,
       payment_terms: formData.payment_terms,
